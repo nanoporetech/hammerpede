@@ -8,7 +8,11 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 requirements = [
-    # TODO: put package requirements here
+        'parasail',
+        'biopython',
+        'tqdm',
+        'numpy',
+        'six',
 ]
 
 test_requirements = [
@@ -18,7 +22,7 @@ test_requirements = [
 setup(
     name='Hammerpede',
     version='0.1.0',
-    description="Hammerpede.",
+    description="Training profile HMMs of primers from real data.",
     long_description=readme,
     author="ONT Applications Group",
     author_email='Apps@nanoporetech.com',

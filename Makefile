@@ -1,4 +1,4 @@
-MODULE=pypackage_boilerplate
+MODULE=hammerpede
 
 .PHONY: clean clean-test clean-pyc clean-build docs com help 
 
