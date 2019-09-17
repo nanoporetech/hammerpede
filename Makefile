@@ -1,6 +1,6 @@
 MODULE=hammerpede
 
-.PHONY: clean clean-test clean-pyc clean-build docs com help 
+.PHONY: clean clean-test clean-pyc clean-build com help test
 
 .DEFAULT_GOAL := help
 
@@ -35,6 +35,7 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '__pycache__' -exec rm -fr {} +
 
 clean-test: ## remove test and coverage artifacts
+	rm -fr test/test_output
 	rm -f .coverage
 	rm -fr htmlcov/
 
@@ -42,19 +43,13 @@ lint: ## check style with flake8
 	@(flake8 --max-line-length=120 $(MODULE) | grep -v "E501 line too long") || true
 	@(flake8 --max-line-length=120 scripts/*.py | grep -v "E501 line too long") || true
 
-test: ## run tests quickly with the default Python
-	py.test
+test: ## run tests 
+	(cd test; make)
 
 coverage: ## check code coverage quickly with the default Python
 		coverage run --source $(MODULE) --omit="*/tests/*,*__init__.py" `which py.test`
 		coverage report -m --omit="*/tests/*,*__init__.py"
 		coverage html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	@cd docs; make clean html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: clean ## package and upload a release
 	python setup.py sdist upload
