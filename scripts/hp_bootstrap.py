@@ -4,6 +4,7 @@
 import argparse
 from Bio import SeqIO
 import os
+import sys
 import tqdm
 from hammerpede import seq_utils as seu
 from hammerpede import seq_detect
@@ -72,6 +73,7 @@ if __name__ == '__main__':
         aln_fas = os.path.join(OUTDIR, "hits_{}{}.fasta".format("" if q[1] == "+" else "-", q[0]))
         ofhs[q] = (open(aln_fas, "w"), aln_fas)
 
+    sys.stderr.write("Extracting primer regions from reads in {}\n".format(args.input_fastx))
     for read in seu.read_seq_records(args.input_fastx, args.i):
         for q, qd in queries.items():
             r, score = seq_detect.best_local(read.id, str(read.seq), qd[0], ALIGN_PARAMS)
@@ -81,6 +83,7 @@ if __name__ == '__main__':
                 continue
             SeqIO.write(r, ofhs[q][0], "fasta")
         pbar.update(_record_size(read, args.i))
+    pbar.close()
 
     for q, fh in ofhs.items():
         fh[0].flush()
@@ -88,11 +91,12 @@ if __name__ == '__main__':
 
     for q, qd in ofhs.items():
         aln = os.path.join(OUTDIR, "spoa_aln_" + os.path.basename(qd[1]))
+        sys.stderr.write("Aligning primer regions using spoa: {}\n".format(aln))
         spoa.spoa_align(qd[1], aln)
         ofhs[q] = {"aln": aln}
 
     alns = [("pHMM" + n[1] + n[0], x["aln"]) for n, x in ofhs.items()]
+    sys.stderr.write("Building profile HMMs.\n")
     db_name = os.path.join(OUTDIR, os.path.splitext(os.path.basename(args.f))[0] + ".hmm")
     hmmer.build_db(alns, db_name)
-
-    pbar.close()
+    sys.stderr.write("Finished!\n")
