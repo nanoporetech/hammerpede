@@ -5,6 +5,7 @@
 Hammerpede: training profile HMMs for primers from real Nanopore data
 =====================================================================
 
+Hammerpede is a package to build strand-specific profile HMMs for a set of primers from real Oxford Nanopore reads. The models built can be used by the [pychopper](https://github.com/nanoporetech/pychopper) package to identify and orient full length cDNA reads.
 
 Getting Started
 ================
@@ -18,12 +19,20 @@ This can be easily installed using conda:
 conda install -c bioconda hmmer
 ```
 
+The package also requires the latest [spoa](https://github.com/rvaser/spoa). This is best to be installed from source according to the developers instructions.
+
 ## Installation
 
 Install via pip:
 
 ```bash
 pip install git+https://github.com/nanoporetech/hammerpede.git
+```
+
+After installing the test can be run by issuing:
+
+```bash
+make test
 ```
 
 Issue `make help` to get a list of `make` targets.
@@ -49,8 +58,15 @@ optional arguments:
   -s min_score     Score cutoff (0.8).
 ```
 
+Example usage (see also `test/Makefile`):
+
 ```bash
+hp_bootstrap.py -f cDNA_SSP_VNP_full.fas -o test_output -s 0.75 SIRV_E0_pcs109_1k.fq
 ```
+
+The profile HMMs produced can be visualized using [Skyling](https://skylign.org/). For example the VNP primer logo might look like this:
+
+![ONT_logo](/test/VNP.png)
 
 Contributing
 ================
