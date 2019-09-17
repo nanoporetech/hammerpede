@@ -64,7 +64,7 @@ Example usage (see also `test/Makefile`):
 hp_bootstrap.py -f cDNA_SSP_VNP_full.fas -o test_output -s 0.75 SIRV_E0_pcs109_1k.fq
 ```
 
-The profile HMMs produced can be visualized using [Skyling](https://skylign.org/). For example the VNP primer logo might look like this:
+The profile HMMs produced can be visualized using [Skyling](https://skylign.org/). For example, the VNP primer logo might look like this:
 
 ![ONT_logo](/test/VNP.png)
 
