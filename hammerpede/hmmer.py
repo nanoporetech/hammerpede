@@ -8,6 +8,8 @@ def build_hmm(inf, name):
     outf = os.path.splitext(inf)[0] + ".hmm"
     cmd = "hmmbuild -n \'{}\' --dna {} {} >/dev/null".format(name, outf, inf)
     sp.check_call(cmd, shell=True)
+    cmd = "sed 's/pHMM+//g; s/pHMM\-/-/g' {} > TMP; mv TMP {}".format(outf, outf)
+    sp.check_call(cmd, shell=True)
     return outf
 
 
