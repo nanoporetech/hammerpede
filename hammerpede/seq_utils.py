@@ -3,9 +3,10 @@
 from six.moves import reduce
 import sys
 from Bio import SeqIO
-from Bio.Alphabet.IUPAC import IUPACUnambiguousDNA, IUPACAmbiguousDNA
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+
+IUPAC_DNA = "ACGTRYSWKMBDHVN-"
 
 """ Utilities manipulating biological sequences and formats. Extensions to biopython functionality.
 """
@@ -18,9 +19,7 @@ comp = {
 }
 
 # Shortcut to the list of DNA bases:
-bases = sorted(list(IUPACUnambiguousDNA().letters))
-ambiguous_bases = sorted(list(IUPACAmbiguousDNA().letters))
-
+bases = sorted(list(IUPAC_DNA))
 
 def base_complement(k):
     """ Return complement of base.
@@ -79,7 +78,7 @@ def new_dna_record(sequence, name, qualities=None):
 
     """
     seq_record = SeqRecord(
-        Seq(sequence, IUPACUnambiguousDNA), id=name, description="", name="")
+        Seq(sequence), id=name, description="", name="")
     if qualities is not None:
         seq_record.letter_annotations["phred_quality"] = qualities
     return seq_record
